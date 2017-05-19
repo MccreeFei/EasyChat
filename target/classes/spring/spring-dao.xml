@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--jdbc配置位置映射-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${driver}"/>
+        <property name="jdbcUrl" value="${url}"/>
+        <property name="user" value="${user}"/>
+        <property name="password" value="${password}"/>
+        <!--连接池中最大连接数量-->
+        <property name="maxPoolSize" value="15"/>
+        <!--数据库连接池中最少连接数量-->
+        <property name="minPoolSize" value="5"/>
+        <!--连接放回池中时不自动commit-->
+        <property name="autoCommitOnClose" value="false"/>
+    </bean>
+
+    <!--mybatis sqlSessionFactory配置-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:map/*.xml"/>
+    </bean>
+
+    <!--配置扫描dao接口包，mybatis动态实现dao接口，注入spring容器-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="cn.mccreefei.dao"/>
+    </bean>
+
+    <!--测试service使用-->
+    <!--<context:component-scan base-package="cn.mccreefei.service"/>-->
+
+</beans>

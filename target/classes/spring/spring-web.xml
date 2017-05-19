@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--在cn.mccreefei包下自动扫描组件加入容器-->
+    <context:component-scan base-package="cn.mccreefei"/>
+    <!--mvc注解支持-->
+    <mvc:annotation-driven/>
+    <!--配置静态文件路径与映射-->
+    <mvc:resources mapping="/resources/**" location="/resources/"/>
+
+    <!--配置视图解析bean-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--配置支持文件上传bean-->
+    <!--Tomcat8以上，支持文件上传需要在context.xml中context结点属性配置allowCasualMultipartParsing="true"-->
+    <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--最大内存大小-->
+        <property name="maxInMemorySize" value="4048"/>
+        <property name="defaultEncoding" value="utf-8"/>
+        <!--上传限制大小，-1无限制-->
+        <property name="maxUploadSize" value="-1"/>
+    </bean>
+
+
+</beans>
