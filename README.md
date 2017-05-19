@@ -1,0 +1,4 @@
+# EasyChat
+一个基于SSM+Websocket的实时在线聊天室项目
+![功能展示](https://github.com/MccreeFei/EasyChat/tree/master/src/main/webapp/resources/image/ezchat.gif)
+[博客地址](http://mccreefei.cn/215.html)
