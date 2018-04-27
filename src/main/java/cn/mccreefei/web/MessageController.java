@@ -58,7 +58,7 @@ public class MessageController {
     public String handleUploadImage(HttpServletRequest request, @RequestParam("image")MultipartFile imageFile,
                                     @RequestParam("userName")String userName){
         if (!imageFile.isEmpty()){
-            String imageName = userName + "_" + imageFile.getOriginalFilename();
+            String imageName = userName + "_" + (int)(Math.random() * 1000000) + ".jpg";
             String path = request.getSession().getServletContext().getRealPath(IMAGE_PREFIX)  +"/" + imageName;
             File localImageFile = new File(path);
             try {
