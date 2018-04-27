@@ -36,7 +36,7 @@ $(function () {
                 console.log(res);
             });
         }
-    })
+    });
     initEmoji();
     $("#sendImageBtn").click(function () {
         $("#sendImage").trigger("click");

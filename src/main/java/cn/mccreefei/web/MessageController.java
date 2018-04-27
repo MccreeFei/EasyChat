@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
 
@@ -53,23 +55,27 @@ public class MessageController {
      */
     @RequestMapping(value = "/upload/image", method = RequestMethod.POST)
     @ResponseBody
-    public String handleUploadImage(HttpServletRequest request, @RequestParam("image")MultipartFile imageFile, @RequestParam("userName")String userName){
+    public String handleUploadImage(HttpServletRequest request, @RequestParam("image")MultipartFile imageFile,
+                                    @RequestParam("userName")String userName){
         if (!imageFile.isEmpty()){
             String imageName = userName + "_" + imageFile.getOriginalFilename();
-            String path = request.getServletContext().getRealPath(IMAGE_PREFIX)  + imageName;
+            String path = request.getSession().getServletContext().getRealPath(IMAGE_PREFIX)  +"/" + imageName;
             File localImageFile = new File(path);
             try {
-                imageFile.transferTo(localImageFile);
+                //上传图片到目录
+                byte[] bytes = imageFile.getBytes();
+                BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(localImageFile));
+                bufferedOutputStream.write(bytes);
+                bufferedOutputStream.close();
                 Message message = new Message();
                 message.setMessageType("image");
                 message.setUserName(userName);
                 message.setSendDate(new Date());
                 message.setContent(request.getContextPath() + IMAGE_PREFIX + imageName);
 
-
                 messagingTemplate.convertAndSend(SUBSCRIBE_MESSAGE_URI, message);
             } catch (IOException e) {
-                logger.error("图片上传失败：" + e.getMessage());
+                logger.error("图片上传失败：" + e.getMessage(), e);
                 return "upload false";
             }
         }

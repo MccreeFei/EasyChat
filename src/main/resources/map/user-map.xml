@@ -5,17 +5,17 @@
 <mapper namespace="cn.mccreefei.dao.UserDAO">
     <!--通过用户名和密码查询-->
     <select id="queryUser" resultType="cn.mccreefei.model.User">
-        SELECT id, name, password FROM USER
+        SELECT id, name, password FROM user
         WHERE name = #{name} AND password = #{password}
     </select>
     <!--通过用户名查询-->
     <select id="queryUserByName" resultType="cn.mccreefei.model.User">
-        SELECT id, name, password FROM USER
+        SELECT id, name, password FROM user
         WHERE name = #{name}
     </select>
 
     <!--插入用户-->
     <insert id="insertUser" >
-        INSERT INTO USER(name, password) VALUES(#{name}, #{password})
+        INSERT INTO user(name, password) VALUES(#{name}, #{password})
     </insert>
 </mapper>
