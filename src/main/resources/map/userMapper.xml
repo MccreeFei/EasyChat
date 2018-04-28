@@ -13,6 +13,11 @@
         SELECT id, name, password FROM user
         WHERE name = #{name}
     </select>
+    <select id="getUserByName"  resultType="cn.mccreefei.model.User">
+        SELECT * FROM user
+        where name = #{name}
+        limit 1
+    </select>
 
     <!--插入用户-->
     <insert id="insertUser" >

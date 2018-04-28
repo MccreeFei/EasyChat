@@ -1,6 +1,10 @@
 package cn.mccreefei.web;
 
+import cn.mccreefei.enums.MessageTypeEnum;
 import cn.mccreefei.model.Message;
+import cn.mccreefei.model.MessageRecordDo;
+import cn.mccreefei.model.User;
+import cn.mccreefei.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +37,8 @@ public class MessageController {
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+    @Autowired
+    private UserService userService;
 
     /**
      * 接收并且转发消息
@@ -43,6 +49,13 @@ public class MessageController {
         message.setSendDate(new Date());
         message.setMessageType("text");
         logger.info(message.getSendDate() + "," + message.getUserName() + " send a message:" + message.getContent());
+        //保存聊天信息
+        User userByName = userService.getUserByName(message.getUserName());
+        MessageRecordDo messageRecordDo = MessageRecordDo.messageRecordBuilder()
+                .userId(userByName == null ? null : userByName.getId())
+                .userName(message.getUserName()).content(message.getContent())
+                .messageType(MessageTypeEnum.TEXT.getCode()).createTime(new Date()).build();
+        userService.addUserMessageRecord(messageRecordDo);
         messagingTemplate.convertAndSend(SUBSCRIBE_MESSAGE_URI, message);
     }
 
@@ -72,6 +85,14 @@ public class MessageController {
                 message.setUserName(userName);
                 message.setSendDate(new Date());
                 message.setContent(request.getContextPath() + IMAGE_PREFIX + imageName);
+
+                //保存发送图片信息
+                User userByName = userService.getUserByName(message.getUserName());
+                MessageRecordDo messageRecordDo = MessageRecordDo.messageRecordBuilder()
+                        .userId(userByName == null ? null : userByName.getId())
+                        .userName(userName).content(message.getContent())
+                        .messageType(MessageTypeEnum.IMAGE.getCode()).createTime(new Date()).build();
+                userService.addUserMessageRecord(messageRecordDo);
 
                 messagingTemplate.convertAndSend(SUBSCRIBE_MESSAGE_URI, message);
             } catch (IOException e) {

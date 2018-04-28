@@ -1,7 +1,10 @@
 package cn.mccreefei.web.websocket;
 
+import cn.mccreefei.enums.LoginTypeEnum;
+import cn.mccreefei.model.LoginInfoDo;
 import cn.mccreefei.model.ParticipantRepository;
 import cn.mccreefei.model.User;
+import cn.mccreefei.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ public class WebSocketDisconnectHandler implements ApplicationListener<SessionDi
     @Autowired
     private ParticipantRepository participantRepository;
 
+    @Autowired
+    private UserService userService;
+
     private final static String SUBSCRIBE_LOGOUT_URI = "/topic/logout";
 
     /**
@@ -42,6 +48,12 @@ public class WebSocketDisconnectHandler implements ApplicationListener<SessionDi
         if (participantRepository.containsUserName(disconnectUserName)){
             User removeUser = participantRepository.remove(disconnectUserName);
             removeUser.setLogoutDate(new Date());
+            //保存登出信息
+            User userByName = userService.getUserByName(removeUser.getName());
+            LoginInfoDo loginInfo = LoginInfoDo.builder().userId(userByName == null ? null : userByName.getId())
+                    .userName(removeUser.getName()).
+                    status(LoginTypeEnum.LOGOUT.getCode()).createTime(new Date()).build();
+            userService.addUserLoginInfo(loginInfo);
             logger.info(removeUser.getLogoutDate() + ", " + removeUser.getName() + " logout.");
             messagingTemplate.convertAndSend(SUBSCRIBE_LOGOUT_URI, removeUser);
         }

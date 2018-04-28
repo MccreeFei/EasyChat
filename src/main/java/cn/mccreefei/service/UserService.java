@@ -1,5 +1,7 @@
 package cn.mccreefei.service;
 
+import cn.mccreefei.model.LoginInfoDo;
+import cn.mccreefei.model.MessageRecordDo;
 import cn.mccreefei.model.User;
 
 /**
@@ -28,4 +30,10 @@ public interface UserService {
      * @param password
      */
     public void insertUser(String name, String password);
+
+    public void addUserLoginInfo(LoginInfoDo loginInfoDo);
+
+    public void addUserMessageRecord(MessageRecordDo messageRecordDo);
+
+    public User getUserByName(String name);
 }

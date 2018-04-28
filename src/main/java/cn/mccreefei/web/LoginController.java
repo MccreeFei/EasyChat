@@ -1,9 +1,7 @@
 package cn.mccreefei.web;
 
-import cn.mccreefei.model.ParticipantRepository;
-import cn.mccreefei.model.ReplyLoginMessage;
-import cn.mccreefei.model.ReplyRegistMessage;
-import cn.mccreefei.model.User;
+import cn.mccreefei.enums.LoginTypeEnum;
+import cn.mccreefei.model.*;
 import cn.mccreefei.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,6 +88,10 @@ public class LoginController {
         user.setPassword(null);  //设空防止泄露给其他用户
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
+        //保存登陆信息
+        LoginInfoDo loginInfo = LoginInfoDo.builder().userId(user.getId()).userName(user.getName()).
+                status(LoginTypeEnum.LOGIN.getCode()).createTime(new Date()).build();
+        userService.addUserLoginInfo(loginInfo);
 
         messagingTemplate.convertAndSend(SUBSCRIBE_LOGIN_URI, user);
         participantRepository.add(user.getName(), user);

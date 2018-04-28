@@ -13,19 +13,27 @@ public interface UserDAO {
      * @param password
      * @return 存在返回该用户对象，不存在返回null
      */
-    public User queryUser(@Param("name") String name,@Param("password") String password);
+    User queryUser(@Param("name") String name,@Param("password") String password);
 
     /**
      * 以用户名查询用户
      * @param name
      * @return 存在该用户名返回用户对象，否则返回null
      */
-    public User queryUserByName(String name);
+    User queryUserByName(String name);
 
     /**
      * 插入一位用户
      * @param name
      * @param password
      */
-    public void insertUser(@Param("name") String name,@Param("password") String password);
+    void insertUser(@Param("name") String name,@Param("password") String password);
+
+    /**
+     * 根据用户名获取用户信息
+     * @param name
+     * @return
+     */
+    User getUserByName(@Param("name") String name);
+
 }
