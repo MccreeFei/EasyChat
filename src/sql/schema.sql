@@ -15,7 +15,7 @@ CREATE TABLE `easychat`.`login_info` (
   `user_name` VARCHAR(45) NULL,
   `status` TINYINT NULL COMMENT'1.上线，2.下线',
   `create_time` DATETIME NULL,
-  PRIMARY KEY (`id`));
+  PRIMARY KEY (`id`)) default charset = utf8;
 
 #聊天内容表
 CREATE TABLE `easychat`.`message_record` (
@@ -25,4 +25,4 @@ CREATE TABLE `easychat`.`message_record` (
   `message_type` TINYINT NULL COMMENT'1.文本， 2.图片',
   `content` VARCHAR(256) NULL,
   `create_time` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`));
+  PRIMARY KEY (`id`))default charset = utf8;
