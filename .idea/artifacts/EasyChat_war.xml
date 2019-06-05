@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="EasyChat:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="easy-chat.war">
-      <element id="artifact" artifact-name="EasyChat:war exploded" />
-    </root>
-  </artifact>
-</component>
