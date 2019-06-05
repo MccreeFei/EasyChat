@@ -2,7 +2,7 @@
 一个基于SSM+Websocket的实时在线聊天室项目
 
 ## 功能展示
-![功能展示](https://github.com/MccreeFei/EasyChat/tree/master/src/main/webapp/resources/image/ezchat.gif)
+![功能展示](https://i.loli.net/2019/01/13/5c3b3d59c4c9b.gif)
 ## 本地部署
 - 将```sql/schema.sql```导入本地mysql，修改```resources/system-config.properties```中mysql用户名与密码。
 - 使用maven jetty插件运行本项目，配置如下
