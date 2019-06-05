@@ -7,13 +7,13 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
     <!--jdbc配置位置映射-->
-    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <context:property-placeholder location="classpath:system-config.properties"/>
 
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" lazy-init="true">
-        <property name="driverClassName" value="${driver}"/>
-        <property name="url" value="${url}"/>
-        <property name="username" value="root"/>
-        <property name="password" value="${password}"/>
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
         <!--连接池中最大连接数量-->
         <property name="maxActive" value="15"/>
         <!--数据库连接池中最少连接数量-->
@@ -33,7 +33,6 @@
         <property name="basePackage" value="cn.mccreefei.dao"/>
     </bean>
 
-    <!--测试service使用-->
-    <!--<context:component-scan base-package="cn.mccreefei.service"/>-->
+
 
 </beans>
